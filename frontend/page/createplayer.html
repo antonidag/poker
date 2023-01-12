@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Player</title>
+  <meta name="description" content="Our first page" />
+  <meta name="keywords" content="html tutorial template" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+</head>
+
+<body>
+  <div data-include="nav"></div>
+  <form id="form">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter name">
+    </div>
+    <div class="form-group">
+      <label for="nickname">Nickname</label>
+      <input type="text" class="form-control" id="nickname" aria-describedby="emailHelp" placeholder="Enter nickname">
+    </div>
+    <div class="form-group">
+      <label for="age">Age</label>
+      <input type="number" class="form-control" id="age" aria-describedby="age" placeholder="Enter birth year">
+    </div>
+    <div class="form-group">
+      <label for="file">Example file profile pic</label>
+      <input type="file" class="form-control-file" id="file">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit form</button>
+  </form>
+  <script src="./scripts/createplayer.js">
+  </script>
+</body>
+
+</html>
