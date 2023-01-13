@@ -38,3 +38,4 @@ ngrok http 8080
 - prediction
 - avg score
 - change Backend to typescript 
+- difference from top player 
