@@ -195,17 +195,19 @@ function createTableData(playerPlacements, games, totalWinnerPots) {
     console.log(games);
     console.log(totalWinnerPots);
     var array = new Array();
-    var RankingIndex = 1;
+    var Ranking = 1;
     for (const player of playerPlacements) {
         var row = {};
         var Name = player.name;
         var GamesPlayed = 0;
-        var FirstPlaced = 0;
+        var Wins = 0;
         var TotalWinnerPot = 0;
         var WinRatio = 0;
         var TopPlacement = 8
         var WorstPlacement = 0;
         var Score = player.placement;
+        var Top3Placements = 0;
+        var Top3Chance = 0;
         for (const game of games) {
             var placements = game.placements;
             var found = placements.find(p => p == Name)
@@ -214,7 +216,7 @@ function createTableData(playerPlacements, games, totalWinnerPots) {
             }
             var isFirstPlace = placements[0] == Name;
             if (isFirstPlace) {
-                FirstPlaced++;
+                Wins++;
             }
             var placementIndex = 1;
             for (const player of placements) {
@@ -233,16 +235,33 @@ function createTableData(playerPlacements, games, totalWinnerPots) {
                 }
                 placementIndex++;
             }
+            placementIndex = 1;
+            for (const player of placements) {
+                if (Name == player) {
+                    if (placementIndex == 1) {
+                        Top3Placements++;
+                    }
+                    if (placementIndex == 2) {
+                        Top3Placements++;
+                    }
+                    if (placementIndex == 3) {
+                        Top3Placements++;
+                    }
+                }
+                placementIndex++;
+            }
+
         }
         var winnerPot = totalWinnerPots[Name];
         if (winnerPot) {
             TotalWinnerPot = winnerPot;
         }
-        WinRatio = `${(FirstPlaced / GamesPlayed) * 100}%`;
+        WinRatio = `${(Wins / GamesPlayed) * 100}%`;
+        Top3Chance =`${(Top3Placements / GamesPlayed) * 100}%`;
 
-        row = { RankingIndex, Name, Score, FirstPlaced, GamesPlayed, TotalWinnerPot, TopPlacement, WorstPlacement, WinRatio };
+        row = { Ranking, Name, Score, Wins, GamesPlayed, TotalWinnerPot, Top3Placements, TopPlacement, WorstPlacement, WinRatio, Top3Chance};
         array.push(row);
-        RankingIndex++;
+        Ranking++;
 
     }
     return array;
