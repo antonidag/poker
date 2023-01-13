@@ -33,3 +33,8 @@ ngrok http 8080
 
 ## Add docker
  - set up docker file
+
+## Things to add
+- prediction
+- avg score
+- change Backend to typescript 
