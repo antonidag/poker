@@ -40,3 +40,4 @@ ngrok http 8080
 - change Backend to typescript 
 - difference from top player 
 - What is each chip worth? Images and "points"
+- Get a personal player stats
