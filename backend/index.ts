@@ -5,7 +5,16 @@ import { getPlayerStatistics } from './src/gamehistorydata';
 const app = express()
 const PORT = 3000
 
-const addEndpoint = (endPointName: string) => {
+const addEndpoint = (endPointName: string, execute: Function) => {
+  console.log(`Endpoint [get]: localhost:${PORT}/${endPointName}`)
+  app.get(`/${endPointName}`, function (req, res) {
+    const parms = req.query;
+    console.log(parms);
+    res.send(execute(parms))
+  })
+}
+
+const addFileEndpoint = (endPointName: string) => {
   console.log(`Endpoint [get,post]: localhost:${PORT}/${endPointName}`)
   app.get(`/${endPointName}`, function (req, res) {
     res.sendFile(`data/${endPointName}.json`, { root: '.' })
@@ -37,20 +46,20 @@ app.use(function (req, res, next) {
 });
 app.use(express.json())
 
+//Endpoints
 const files = fs.readdirSync('./data/');
 files.forEach(file => {
   if (file.includes('.json')) {
     var fileNameWithoutExtension = file.split(".")[0]
-    addEndpoint(fileNameWithoutExtension)
+    addFileEndpoint(fileNameWithoutExtension)
   }
 
 });
-//Endpoints
+
 mediaEndpoint("media")
+addFileEndpoint('')
+addEndpoint('stats/players', getPlayerStatistics)
 
 app.listen(PORT, () => {
   console.log(`Backend end-points running at: localhost:${PORT}`)
-  const data = getPlayerStatistics("")
-  console.log(data);
 })
-

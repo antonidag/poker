@@ -1,15 +1,13 @@
 import fs from "fs"
 import { GameHistory, PlacementPoints, Player } from "./types";
 
-export const getPlayerStatistics = (dateYear: string) => {
+export const getPlayerStatistics = (parms: { [key: string] : string;}  ) => {
     const { players, gameHistoryRaw, placementPoints } = getBasicData()
-
     const playerPlacements = getPlayerPlacements(gameHistoryRaw, placementPoints);
-    const totalWinnerPots = getTotalWinnerPot(gameHistoryRaw)
+    const totalWinnerPots = getTotalWinnerPot(gameHistoryRaw);
     var array = [];
     var Ranking = 1;
     for (const player of playerPlacements) {
-        console.log(player);
         var row = {};
         var Name = player.name;
         var GamesPlayed = 0;
@@ -97,8 +95,6 @@ function getPlayerPlacements(games: GameHistory[], placementPoints: PlacementPoi
             placementIndex++;
         }
     }
-    console.log(playerPlacements.keys())
-    console.log(playerPlacements.get('Peter Andersson'))
     for (const key of playerPlacements.keys()) {
         array.push({ name: key, placement: playerPlacements.get(key) })
     }
@@ -160,6 +156,5 @@ const getBasicData = () => {
     const players = JSON.parse(getRawData('player.json').toString()) as Player[];
     const gameHistoryRaw = JSON.parse(getRawData('gamehistory.json').toString()) as GameHistory[];
     const placementPoints = JSON.parse(getRawData('placmentpoints.json').toString()) as PlacementPoints;
-
     return { players,  gameHistoryRaw, placementPoints }
 }

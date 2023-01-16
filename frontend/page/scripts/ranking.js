@@ -259,7 +259,7 @@ function createTableData(playerPlacements, games, totalWinnerPots) {
         WinRatio = `${(Wins / GamesPlayed) * 100}%`;
         Top3Chance =`${(Top3Placements / GamesPlayed) * 100}%`;
 
-        row = { Ranking, Name, Score, Wins, GamesPlayed, TotalWinnerPot, Top3Placements, TopPlacement, WorstPlacement, WinRatio, Top3Chance};
+        row = { Ranking, Name ,TotalWinnerPot, GamesPlayed,Wins,  Top3Placements, TopPlacement, WorstPlacement, WinRatio, Top3Chance,Score};
         array.push(row);
         Ranking++;
 
