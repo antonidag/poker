@@ -1,6 +1,6 @@
 import express from 'express';
 import fs from "fs";
-import { getPlayerStatistics } from './src/gamehistorydata';
+import { getPlayerPlacements, getPlayerStatistics, getTotalWinnerPot } from './src/gamehistorydata';
 
 const app = express()
 const PORT = 3000
@@ -59,6 +59,8 @@ files.forEach(file => {
 mediaEndpoint("media")
 addFileEndpoint('')
 addEndpoint('stats/players', getPlayerStatistics)
+addEndpoint('stats/placements', getPlayerPlacements)
+addEndpoint('stats/totalwinnerpot',getTotalWinnerPot)
 
 app.listen(PORT, () => {
   console.log(`Backend end-points running at: localhost:${PORT}`)
