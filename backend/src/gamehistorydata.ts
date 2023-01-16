@@ -2,9 +2,9 @@ import fs from "fs"
 import { GameHistory, PlacementPoints, Player } from "./types";
 
 export const getPlayerStatistics = (parms: { [key: string] : string;}  ) => {
-    const { players, gameHistoryRaw, placementPoints } = getBasicData()
-    const playerPlacements = getPlayerPlacements(gameHistoryRaw, placementPoints);
-    const totalWinnerPots = getTotalWinnerPot(gameHistoryRaw);
+    const games = getGameHistoryData();
+    const playerPlacements = getPlayerPlacements();
+    const totalWinnerPots = getTotalWinnerPot();
     var array = [];
     var Ranking = 1;
     for (const player of playerPlacements) {
@@ -19,7 +19,7 @@ export const getPlayerStatistics = (parms: { [key: string] : string;}  ) => {
         var Score = player.placement;
         var Top3Placements = 0;
         var Top3Chance = "";
-        for (const game of gameHistoryRaw) {
+        for (const game of games) {
             var placements = game.placements;
             var found = placements.find(p => p == Name)
             if (found) {
@@ -77,8 +77,10 @@ export const getPlayerStatistics = (parms: { [key: string] : string;}  ) => {
     return array;
 }
 
-function getPlayerPlacements(games: GameHistory[], placementPoints: PlacementPoints) {
+export const getPlayerPlacements = () => {
     var playerPlacements = new Map<any, any>();
+    const games = getGameHistoryData();
+    const placementPoints = getPlacementPointsData();
     var array = []
     for (const game of games) {
         const placements = game.placements;
@@ -100,11 +102,12 @@ function getPlayerPlacements(games: GameHistory[], placementPoints: PlacementPoi
     }
     return array;
 }
-function getTotalWinnerPot(games: GameHistory[]) {
+export const getTotalWinnerPot = () => {
     var totalWinnerPots = new Map();
-
+    const games = getGameHistoryData();
     for (const game of games) {
         const placements = game.placements;
+        console.log(game,placements);
         var placementIndex = 1;
         for (const placement of placements) {
             var currentPlayerPot = totalWinnerPots.get(placement)
@@ -152,9 +155,14 @@ function getTotalWinnerPot(games: GameHistory[]) {
 const getRawData = (fileName: string) => {
     return fs.readFileSync(`data/${fileName}`);
 }
-const getBasicData = () => {
-    const players = JSON.parse(getRawData('player.json').toString()) as Player[];
-    const gameHistoryRaw = JSON.parse(getRawData('gamehistory.json').toString()) as GameHistory[];
-    const placementPoints = JSON.parse(getRawData('placmentpoints.json').toString()) as PlacementPoints;
-    return { players,  gameHistoryRaw, placementPoints }
+const getPlayerData = () => {
+    return JSON.parse(getRawData('player.json').toString()) as Player[];
+}
+const getGameHistoryData = () => {
+
+    return JSON.parse(getRawData('gamehistory.json').toString()) as GameHistory[];
+}
+const getPlacementPointsData = () => {
+
+    return JSON.parse(getRawData('placmentpoints.json').toString()) as PlacementPoints;
 }
