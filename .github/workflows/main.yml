@@ -24,6 +24,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Deploy to Back4App
+      env:
+        SUPER_SECRET: ${{ secrets.Back4AppKey }}
       run: | 
+        echo "$SUPER_SECRET"
         curl https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
         b4a configure accountkey 
