@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node index.ts",
-    "build" : "tsc --outDir ../cloud/"
+    "build" : "tsc --outDir ../b4apoker/cloud/"
   },
   "author": "",
   "license": "ISC",
