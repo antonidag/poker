@@ -14,8 +14,6 @@ Parse.serverURL = "https://parseapi.back4app.com/";
 // Create a new User
 async function createParseUser() {
   // Creates a new Parse "User" object, which is created by default in your Parse app
-  const helloFunction = await Parse.Cloud.run("hello");
-  console.log(helloFunction);
   let user = new Parse.User();
   // Set the input values to the new "User" object
   user.set("username", document.getElementById("username").value);
