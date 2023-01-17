@@ -18,4 +18,12 @@ jobs:
       run: |
         cp -a ./frontend/. public/
         cd public
-        ls
+        ls 
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Deploy to Back4App
+      run: | 
+        curl https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
+        b4a
