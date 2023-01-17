@@ -10,8 +10,8 @@ jobs:
     steps:
     - name: Dump GitHub context
       env:
-          GITHUB_CONTEXT: hello
-      run: echo "$GITHUB_CONTEXT"
+          BACK4APPKEY: ${{secrets.BACK4APPKEY}}
+      run: echo "$BACK4APPKEY"
     - uses: actions/checkout@v1
     - name: Build backend
       run:  |
