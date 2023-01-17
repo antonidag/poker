@@ -26,5 +26,5 @@ jobs:
         curl https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
         b4a configure accountkey <<<"$BACK4APPKEY"
         ls
-        b4a deploy
+        b4a new <<< e <<< 1
 
