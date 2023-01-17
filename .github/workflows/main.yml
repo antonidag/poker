@@ -16,9 +16,7 @@ jobs:
         npm run build
     - name: Build frontend
       run: |
-        cp -a ./frontend/. /b4apoker/public/
-        cd public
-        ls
+        cp -a ./frontend/. ./b4apoker/public/
     - name: Deploy to Back4App
       env:
         BACK4APPKEY: ${{secrets.BACK4APPKEY}}
