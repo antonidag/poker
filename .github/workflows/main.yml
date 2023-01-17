@@ -8,10 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Dump GitHub context
-      env:
-          BACK4APPKEY: ${{secrets.BACK4APPKEY}}
-      run: echo "$BACK4APPKEY"
     - uses: actions/checkout@v1
     - name: Build backend
       run:  |
@@ -22,15 +18,11 @@ jobs:
       run: |
         cp -a ./frontend/. public/
         cd public
-        ls 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
+        ls
     - name: Deploy to Back4App
       env:
-        SUPER_SECRET: ${{ secrets.Back4AppKey }}
+        BACK4APPKEY: ${{secrets.BACK4APPKEY}}
       run: | 
-        echo "$SUPER_SECRET"
         curl https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
-        b4a configure accountkey 
+        b4a configure accountkey <<<"$BACK4APPKEY"
+
