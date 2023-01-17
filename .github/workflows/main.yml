@@ -26,4 +26,4 @@ jobs:
     - name: Deploy to Back4App
       run: | 
         curl https://raw.githubusercontent.com/back4app/parse-cli/back4app/installer.sh | sudo /bin/bash
-        b4a
+        b4a configure accountkey 
