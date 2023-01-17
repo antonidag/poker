@@ -16,7 +16,7 @@ jobs:
         npm run build
     - name: Build frontend
       run: |
-        cp -a ./frontend/. public/
+        cp -a ./frontend/. /b4apoker/public/
         cd public
         ls
     - name: Deploy to Back4App
