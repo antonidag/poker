@@ -3,8 +3,8 @@ import { GameHistory, PlacementPoints, Player } from "./types";
 
 export const getPlayerStatistics = (parms: { [key: string] : string;}  ) => {
     const games = getGameHistoryData();
-    const playerPlacements = getPlayerPlacements();
-    const totalWinnerPots = getTotalWinnerPot();
+    const playerPlacements = getPlayerPlacements(parms);
+    const totalWinnerPots = getTotalWinnerPot(parms);
     var array = [];
     var Ranking = 1;
     for (const player of playerPlacements) {
@@ -77,7 +77,7 @@ export const getPlayerStatistics = (parms: { [key: string] : string;}  ) => {
     return array;
 }
 
-export const getPlayerPlacements = () => {
+export const getPlayerPlacements = (parms: { [key: string] : string;} ) => {
     var playerPlacements = new Map<any, any>();
     const games = getGameHistoryData();
     const placementPoints = getPlacementPointsData();
@@ -102,7 +102,7 @@ export const getPlayerPlacements = () => {
     }
     return array;
 }
-export const getTotalWinnerPot = () => {
+export const getTotalWinnerPot = (parms: { [key: string] : string;} ) => {
     var totalWinnerPots = new Map();
     const games = getGameHistoryData();
     for (const game of games) {
