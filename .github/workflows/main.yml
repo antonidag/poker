@@ -19,3 +19,6 @@ jobs:
         cd ..
         cd cloud
         ls
+        cd cloud
+        cd src 
+        ls
