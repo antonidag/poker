@@ -9,15 +9,11 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
+    - name: Build backend
+      run:  |
         cd backend
         npm install
         npm run build
-        cd ..
-        cd cloud
-        ls
-        cd src 
-        ls
+    - name: Build frontend
+      run: |
+        cp -a ./frontend/. public/
