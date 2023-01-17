@@ -1,7 +1,7 @@
 import fs from "fs"
 import { GameHistory, PlacementPoints, Player } from "./types";
 
-export const getPlayerStatistics = (parms: { [key: string] : string;}  ) => {
+export const getPlayerStatistics = (parms) => {
     const games = getGameHistoryData();
     const playerPlacements = getPlayerPlacements(parms);
     const totalWinnerPots = getTotalWinnerPot(parms);
@@ -77,8 +77,8 @@ export const getPlayerStatistics = (parms: { [key: string] : string;}  ) => {
     return array;
 }
 
-export const getPlayerPlacements = (parms: { [key: string] : string;} ) => {
-    var playerPlacements = new Map<any, any>();
+export const getPlayerPlacements = (parms ) => {
+    var playerPlacements = new Map();
     const games = getGameHistoryData();
     const placementPoints = getPlacementPointsData();
     var array = []
@@ -102,7 +102,7 @@ export const getPlayerPlacements = (parms: { [key: string] : string;} ) => {
     }
     return array;
 }
-export const getTotalWinnerPot = (parms: { [key: string] : string;} ) => {
+export const getTotalWinnerPot = (parms) => {
     var totalWinnerPots = new Map();
     const games = getGameHistoryData();
     for (const game of games) {
@@ -152,17 +152,17 @@ export const getTotalWinnerPot = (parms: { [key: string] : string;} ) => {
     return totalWinnerPots;
 }
 
-const getRawData = (fileName: string) => {
+const getRawData = (fileName) => {
     return fs.readFileSync(`data/${fileName}`);
 }
 const getPlayerData = () => {
-    return JSON.parse(getRawData('player.json').toString()) as Player[];
+    return JSON.parse(getRawData('player.json').toString());
 }
 const getGameHistoryData = () => {
 
-    return JSON.parse(getRawData('gamehistory.json').toString()) as GameHistory[];
+    return JSON.parse(getRawData('gamehistory.json').toString());
 }
 const getPlacementPointsData = () => {
 
-    return JSON.parse(getRawData('placmentpoints.json').toString()) as PlacementPoints;
+    return JSON.parse(getRawData('placmentpoints.json').toString());
 }
