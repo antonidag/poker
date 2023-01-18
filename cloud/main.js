@@ -46,16 +46,32 @@ async function getPlayerPlacements() {
   }
   return array;
 }
+async function getPlayers() {
+  var players = await loadData('User')
+  var array = []
+  for (const player of players) {
+    const img = player.get('img');
+    const name = player.get('name')
+    const nickName = player.get('nickname')
+    const born = player.get('born')
+    const memberDate = player.get('createdAt')
+    var playerData = {
+      img,
+      name,
+      nickName,
+      born,
+      memberDate
+    }
+    array.push(playerData);
+  }
+  return array;
+}
 
-//This is a hello function and will log a message on the console
 Parse.Cloud.define("getPlayerPlacements", async (request) => {
-  console.log("Hello from Cloud Code!");
   return await getPlayerPlacements();
 });
-
-//Note that Cloud functions accept a JSON parameters dictionary on the request object.
-Parse.Cloud.define("sumNumbers", async (request) => {
-  return (request.params.number1 + request.params.number2);
+Parse.Cloud.define("getPlayers", async (request) => {
+  return await getPlayers();
 });
 
 
