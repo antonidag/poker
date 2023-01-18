@@ -37,7 +37,7 @@ function createCard(parentElement, player) {
     // Create the fourth text element
     const text4 = document.createElement("p");
     text4.classList.add("card-text");
-    text4.textContent = `Age: ${player.born}`;
+    text4.textContent = `Born: ${player.born}`;
 
     // Append all the elements to the card body
     cardBody.appendChild(title);
