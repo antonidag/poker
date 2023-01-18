@@ -50,7 +50,7 @@ async function getPlayerPlacements() {
 //This is a hello function and will log a message on the console
 Parse.Cloud.define("getPlayerPlacements", async (request) => {
   console.log("Hello from Cloud Code!");
-  return await loadData('GameHistory');
+  return await getPlayerPlacements();
 });
 
 //Note that Cloud functions accept a JSON parameters dictionary on the request object.
