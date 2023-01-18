@@ -5,15 +5,6 @@ $(function () {
         $(this).load(file)
     })
 })
-async function loadPlayers() {
-    try {
-        const response = await fetch("http://localhost:3000/player");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-}
 
 function createRow(id, parentElementName) {
     // Create the div element
@@ -54,7 +45,7 @@ function createCard(parentElement, player) {
     // Create the fourth text element
     const text4 = document.createElement("p");
     text4.classList.add("card-text");
-    text4.textContent = `Age: ${player.age}`;
+    text4.textContent = `Age: ${player.born}`;
 
     // Append all the elements to the card body
     cardBody.appendChild(title);
@@ -69,7 +60,10 @@ function createCard(parentElement, player) {
 }
 
 (async () => {
-    const data = await loadPlayers();
+    // Initialize Parse
+    Parse.initialize("gZqn2uqE0Yi3yHrqxS3MVgb0InQviEu9QtVbPx5G", "IvrGvz2KIonAdfUzgOOMK6an3RhlnhaIvqFbCQ9U"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
+    Parse.serverURL = "https://parseapi.back4app.com/";
+    const data = await Parse.Cloud.run("getPlayers");
 
     let count = 0;
     var parentElement = createRow(count, "card-deck");
