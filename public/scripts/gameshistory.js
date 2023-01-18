@@ -1,19 +1,3 @@
-$(function () {
-    var includes = $('[data-include]')
-    $.each(includes, function () {
-        var file = 'shared/' + $(this).data('include') + '.html'
-        $(this).load(file)
-    })
-})
-async function loadGameHistory() {
-    try {
-        const response = await fetch("http://localhost:3000/gamehistory");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-}
 function createRow(id, parentElementName) {
     // Create the div element
     var divElement = document.createElement('div');
@@ -32,12 +16,13 @@ function createCard(parentElement, game) {
     // Create the card element
     const card = document.createElement("div");
     card.classList.add("card", "text-white", "bg-dark", "mb-3");
+    card.style.width = "25rem";
 
 
     // Create the card body element
     const cardBody = document.createElement("div");
     cardBody.classList.add("card-body");
-    cardBody.style.width = "25rem";
+   // cardBody.style.width = "25rem";
 
     // Create the title element
     const title = document.createElement("h5");
@@ -51,9 +36,10 @@ function createCard(parentElement, game) {
     cardTextDate.textContent = game.date;
 
     // Create the second text element
-    const cardTextNote = document.createElement("p");
-    cardTextNote.classList.add("card-text");
-    cardTextNote.textContent = game.note
+    const cardLocation = document.createElement("p");
+    cardLocation.classList.add("card-text");
+    cardLocation.textContent = `Location: ${game.location}`
+
 
     // Create the third text element
     const ul = document.createElement("ul");
@@ -107,12 +93,17 @@ function createCard(parentElement, game) {
         indexPlacement++;
     }
 
+    // Create the second text element
+    const cardTextNote = document.createElement("p");
+    cardTextNote.classList.add("card-text");
+    cardTextNote.textContent = game.note
 
     // Append all the elements to the card body
     cardBody.appendChild(title);
     cardBody.appendChild(cardTextDate);
-    cardBody.appendChild(cardTextNote);
+    cardBody.appendChild(cardLocation);
     cardBody.appendChild(ul);
+    cardBody.appendChild(cardTextNote);
     //cardBody.appendChild(text4);
 
     // Append the image and card body to the card
@@ -123,12 +114,15 @@ function createCard(parentElement, game) {
 }
 
 (async () => {
-    const data = await loadGameHistory();
+    // Initialize Parse
+    Parse.initialize("gZqn2uqE0Yi3yHrqxS3MVgb0InQviEu9QtVbPx5G", "IvrGvz2KIonAdfUzgOOMK6an3RhlnhaIvqFbCQ9U"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
+    Parse.serverURL = "https://parseapi.back4app.com/";
+    const data = await Parse.Cloud.run("getGamesHistory");
 
     let count = 0;
     var parentElement = createRow(count, "card-deck");
     for (const item of data) {
-        if (count % 4 == 0) {
+        if (count % 3 == 0) {
             parentElement = createRow(count, "card-deck");
 
         }
