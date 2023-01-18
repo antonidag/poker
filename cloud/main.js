@@ -9,7 +9,7 @@ async function loadData(table) {
   }
   return array;
 }
-function getPlacementsPoints(){
+function getPlacementsPoints() {
   return {
     1: 23,
     2: 21,
@@ -67,11 +67,39 @@ async function getPlayers() {
   return array;
 }
 
+async function getGamesHistory() {
+  var games = await loadData('GameHistory')
+  var array = []
+  for (const game of games) {
+    const buyin = game.get('buyin');
+    const name = game.get('name')
+    const placements = game.get('placements')
+    const date = game.get('date')
+    const extra = game.get('extra')
+    const note = game.get('note')
+    const location = game.get('location')
+    var gameData = {
+      buyin,
+      name,
+      placements,
+      date,
+      extra,
+      note,
+      location
+    }
+    array.push(gameData);
+  }
+  return array;
+}
+
 Parse.Cloud.define("getPlayerPlacements", async (request) => {
   return await getPlayerPlacements();
 });
 Parse.Cloud.define("getPlayers", async (request) => {
   return await getPlayers();
+});
+Parse.Cloud.define("getGamesHistory", async (request) => {
+  return await getGamesHistory();
 });
 
 
