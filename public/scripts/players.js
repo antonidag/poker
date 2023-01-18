@@ -1,11 +1,3 @@
-$(function () {
-    var includes = $('[data-include]')
-    $.each(includes, function () {
-        var file = 'shared/' + $(this).data('include') + '.html'
-        $(this).load(file)
-    })
-})
-
 function createRow(id, parentElementName) {
     // Create the div element
     var divElement = document.createElement('div');
