@@ -1,32 +1,50 @@
+if(getCookie('user') == ""){
+  location.href = '/ranking.html';
+}
 // Initialize Parse
 Parse.initialize("gZqn2uqE0Yi3yHrqxS3MVgb0InQviEu9QtVbPx5G", "IvrGvz2KIonAdfUzgOOMK6an3RhlnhaIvqFbCQ9U"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
 Parse.serverURL = "https://parseapi.back4app.com/";
 
-// Create a new User
-async function createParseUser() {
-  // Creates a new Parse "User" object, which is created by default in your Parse app
-  let user = new Parse.User();
-  // Set the input values to the new "User" object
-  user.set("username", document.getElementById("username").value);
-  user.set("email", document.getElementById("email").value);
-  user.set("password", document.getElementById("password").value);
-  try {
-    // Call the save method, which returns the saved object if successful
-    user = await user.save();
-    if (user !== null) {
-      // Notify the success by getting the attributes from the "User" object, by using the get method (the id attribute needs to be accessed directly, though)
-      alert(
-        `New object created with success! ObjectId: ${
-          user.id
-        }, ${user.get("username")}`
-      );
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  let expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
     }
-  } catch (error) {
-    alert(`Error: ${error.message}`);
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
   }
+  return "";
+}
+
+function logIn() {
+  // Create a new instance of the user class
+  var username = document.getElementById("usernameInput").value;
+  var password = document.getElementById("passwordInput").value;
+  var user = Parse.User
+      .logIn(username, password).then(function(user) {
+          console.log('User login successful with name: ' + user.get("username") + ' and email: ' + user.get("email"));
+          setCookie(user.get("username"),user.get("email"),150)
+          location.href = '/ranking.html';
+  }).catch(function(error){
+      console.log("Error: " + error.code + " " + error.message);
+  });
 }
 
 // Add on click listener to call the create parse user function
-document.getElementById("createButton").addEventListener("click", async function () {
-  createParseUser();
+document.getElementById("logInButton").addEventListener("click", async function () {
+  logIn();
 });
+
+
