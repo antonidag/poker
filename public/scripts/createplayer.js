@@ -9,7 +9,7 @@ async function createParseUser() {
     user.set("username", document.getElementById("emailInput").value);
     user.set("email", document.getElementById("emailInput").value);
     user.set("password", document.getElementById("passwordInput").value);
-    user.set("img", document.getElementById("bornInput").value);
+    user.set("img", document.getElementById("imgInput").value);
     user.set("nickname", document.getElementById("nicknameInput").value);
     user.set("born", document.getElementById("bornInput").value);
     user.set("name",document.getElementById("nameInput").value);
