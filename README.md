@@ -12,7 +12,7 @@ On windows run in elevated bash
 npm run db
 ```
 ```bash
-parse-server --appId APPLICATION_ID --clientKey CLIENT_KEY --masterKey MASTER_KEY --databaseURI mongodb://localhost/test
+parse-server --appId APPLICATION_ID --clientKey CLIENT_KEY --masterKey MASTER_KEY --databaseURI mongodb://localhost/test --cloud ./cloud/main.js
 ```
 
 ## Install the Dashboard

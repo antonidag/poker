@@ -1,9 +1,12 @@
 {
   "dependencies": {
+    "apollo-server-core": "^3.11.1",
     "mongodb-runner": "^4.9.0",
     "parse-server": "^5.4.0"
   },
   "scripts": {
-    "db" : "mongodb-runner start"
+    "db": "mongodb-runner start",
+    "parse": "parse-server --appId appId --clientKey clientKey --masterKey masterKey --databaseURI mongodb://localhost/test",
+    "cloud": "parse-server --appId APPLICATION_ID --clientKey CLIENT_KEY --masterKey MASTER_KEY --databaseURI mongodb://localhost/test --cloud ./cloud/main.js "
   }
 }
