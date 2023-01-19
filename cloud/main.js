@@ -254,7 +254,7 @@ Parse.Cloud.define("getTotalWinnerPot", async (request) => {
   return await getTotalWinnerPot();
 });
 Parse.Cloud.define("getPlayerRankings", async (request) => {
-  return await getPlayerPlacements();
+  return await getPlayerRankings();
 });
 
 
