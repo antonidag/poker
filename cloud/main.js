@@ -91,6 +91,76 @@ async function getGamesHistory() {
   }
   return array;
 }
+async function getTotalWinnerPot() {
+  var totalWinnerPots = new Map();
+  const games = await getGamesHistory();
+  for (const game of games) {
+      const placements = game.placements;
+      console.log(game,placements);
+      var placementIndex = 1;
+      for (const placement of placements) {
+          var currentPlayerPot = totalWinnerPots.get(placement)
+          if (placementIndex == 1) {
+              var gamePot = (5 * game.buyin) + game.extra;
+              if (!isNaN(currentPlayerPot)) {
+                  totalWinnerPots.set(placement, currentPlayerPot + gamePot)
+                  placementIndex++;
+                  continue;
+              }
+              totalWinnerPots.set(placement, gamePot)
+              placementIndex++;
+              continue;
+          }
+          if (placementIndex == 2) {
+              var gamePot = (2 * game.buyin);
+              if (!isNaN(currentPlayerPot)) {
+
+                  totalWinnerPots.set(placement, currentPlayerPot + gamePot)
+                  placementIndex++;
+                  continue;
+              }
+              totalWinnerPots.set(placement, gamePot)
+              placementIndex++;
+              continue;
+          }
+          if (placementIndex == 3) {
+              var gamePot = (game.buyin);
+              if (!isNaN(currentPlayerPot)) {
+
+                  totalWinnerPots.set(placement, currentPlayerPot + gamePot)
+                  placementIndex++;
+                  continue;
+              }
+              totalWinnerPots.set(placement, gamePot);
+              placementIndex++;
+              break;
+          }
+
+      }
+  }
+  return totalWinnerPots;
+}
+async function getPlayerPlacements() {
+  var playerPlacements = new Map();
+  var games = await getGamesHistory();
+  var placementPoints = getPlacementsPoints();
+  for (const game of games) {
+      const placements = game.placements;
+      var placementIndex = 1;
+      for (const placement of placements) {
+          var currentPlayerPlacement = playerPlacements[placement]
+          var currentPlacementPoints = placementPoints[placementIndex];
+          if (!isNaN(currentPlayerPlacement)) {
+              playerPlacements[placement] = currentPlayerPlacement + currentPlacementPoints;
+              placementIndex++;
+              continue;
+          }
+          playerPlacements[placement] = currentPlacementPoints;
+          placementIndex++;
+      }
+  }
+  return playerPlacements;
+}
 
 Parse.Cloud.define("getPlayerPlacements", async (request) => {
   return await getPlayerPlacements();
@@ -101,5 +171,12 @@ Parse.Cloud.define("getPlayers", async (request) => {
 Parse.Cloud.define("getGamesHistory", async (request) => {
   return await getGamesHistory();
 });
+Parse.Cloud.define("getTotalWinnerPot", async (request) => {
+  return await getTotalWinnerPot();
+});
+Parse.Cloud.define("getPlayerPlacements", async (request) => {
+  return await getPlayerPlacements();
+});
+
 
 
