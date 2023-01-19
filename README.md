@@ -3,32 +3,21 @@
 ## Get Started
 
 ```bash
-cd frontend
-npm install
-cd backend
 npm install
 ```
 
 ## Running web application
-
-Start back-end ngrok forwarding to localhost
+On windows run in elevated bash
 ```bash
-cd backend
+npm run db
 ```
 ```bash
-npm start
-```
-Start front-end ngrok forwarding to localhost
-```bash
-cd frontend
-```
-```
-npm start
+parse-server --appId APPLICATION_ID --clientKey CLIENT_KEY --masterKey MASTER_KEY --databaseURI mongodb://localhost/test
 ```
 
-Start ngrok forwarding to localhost
+## Install the Dashboard
 ```bash
-ngrok http 8080
+parse-dashboard --dev --appId APPLICATION_ID --masterKey MASTER_KEY --serverURL http://localhost:1337/parse --appName MY_APP
 ```
 
 ## Add docker
