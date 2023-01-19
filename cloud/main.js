@@ -161,6 +161,85 @@ async function getPlayerPlacements() {
   }
   return playerPlacements;
 }
+async function getPlayerRankings() {
+  var playerPlacements = await getPlayerPlacements();
+  var games = await getGamesHistory();
+  var totalWinnerPots = await getTotalWinnerPot();
+  console.log(games);
+  console.log(totalWinnerPots);
+  var array = new Array();
+  var Ranking = 1;
+  for (const player of playerPlacements) {
+      var row = {};
+      var Name = player.name;
+      var GamesPlayed = 0;
+      var Wins = 0;
+      var TotalWinnerPot = 0;
+      var WinRatio = 0;
+      var TopPlacement = 8
+      var WorstPlacement = 0;
+      var Score = player.placement;
+      var Top3Placements = 0;
+      var Top3Chance = 0;
+      for (const game of games) {
+          var placements = game.placements;
+          var found = placements.find(p => p == Name)
+          if (found) {
+              GamesPlayed++;
+          }
+          var isFirstPlace = placements[0] == Name;
+          if (isFirstPlace) {
+              Wins++;
+          }
+          var placementIndex = 1;
+          for (const player of placements) {
+              if (Name == player) {
+                  if (TopPlacement > placementIndex) TopPlacement = placementIndex;
+                  break;
+              }
+              placementIndex++;
+          }
+          placementIndex = 1;
+          for (const player of placements) {
+              if (Name == player) {
+                  if (placementIndex > WorstPlacement) {
+                      WorstPlacement = placementIndex;
+                  }
+              }
+              placementIndex++;
+          }
+          placementIndex = 1;
+          for (const player of placements) {
+              if (Name == player) {
+                  if (placementIndex == 1) {
+                      Top3Placements++;
+                  }
+                  if (placementIndex == 2) {
+                      Top3Placements++;
+                  }
+                  if (placementIndex == 3) {
+                      Top3Placements++;
+                  }
+              }
+              placementIndex++;
+          }
+
+      }
+      var winnerPot = totalWinnerPots[Name];
+      if (winnerPot) {
+          TotalWinnerPot = winnerPot;
+      }
+      WinRatio = `${(Wins / GamesPlayed) * 100}%`;
+      Top3Chance = `${(Top3Placements / GamesPlayed) * 100}%`;
+
+      row = { Ranking, Name, TotalWinnerPot, GamesPlayed, Wins, Top3Placements, TopPlacement, WorstPlacement, WinRatio, Top3Chance, Score };
+      array.push(row);
+      Ranking++;
+
+  }
+  return array;
+
+}
 
 Parse.Cloud.define("getPlayerPlacements", async (request) => {
   return await getPlayerPlacements();
@@ -175,6 +254,9 @@ Parse.Cloud.define("getTotalWinnerPot", async (request) => {
   return await getTotalWinnerPot();
 });
 Parse.Cloud.define("getPlayerPlacements", async (request) => {
+  return await getPlayerPlacements();
+});
+Parse.Cloud.define("getPlayerRankings", async (request) => {
   return await getPlayerPlacements();
 });
 
