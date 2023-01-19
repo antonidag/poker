@@ -23,7 +23,7 @@ function getPlacementsPoints() {
 }
 async function getPlayerPlacements() {
   var playerPlacements = new Map();
-  var games = await loadData('GameHistory')
+  var games = await getGamesHistory();
   var placementPoints = getPlacementsPoints();
   var array = []
   for (const game of games) {
@@ -252,9 +252,6 @@ Parse.Cloud.define("getGamesHistory", async (request) => {
 });
 Parse.Cloud.define("getTotalWinnerPot", async (request) => {
   return await getTotalWinnerPot();
-});
-Parse.Cloud.define("getPlayerPlacements", async (request) => {
-  return await getPlayerPlacements();
 });
 Parse.Cloud.define("getPlayerRankings", async (request) => {
   return await getPlayerPlacements();
