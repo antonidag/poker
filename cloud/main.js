@@ -44,7 +44,7 @@ async function getPlayerPlacements() {
   for (const key of playerPlacements.keys()) {
     array.push({ name: key, placement: playerPlacements.get(key) })
   }
-  return array;
+  return array.sort((a, b) => { return b.placement - a.placement; });;
 }
 async function getPlayers() {
   var players = await loadData('User')
