@@ -96,7 +96,6 @@ async function getTotalWinnerPot() {
   const games = await getGamesHistory();
   for (const game of games) {
       const placements = game.placements;
-      console.log(game,placements);
       var placementIndex = 1;
       for (const placement of placements) {
           var currentPlayerPot = totalWinnerPots.get(placement)
@@ -165,8 +164,8 @@ async function getPlayerRankings() {
   var playerPlacements = await getPlayerPlacements();
   var games = await getGamesHistory();
   var totalWinnerPots = await getTotalWinnerPot();
-  console.log(games);
-  console.log(totalWinnerPots);
+  console.log("Data for Player Rankings")
+  console.log(playerPlacements, games, totalWinnerPots);
   var array = new Array();
   var Ranking = 1;
   for (const player of playerPlacements) {
