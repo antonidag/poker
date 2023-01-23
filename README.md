@@ -32,3 +32,4 @@ parse-dashboard --dev --appId APPLICATION_ID --masterKey MASTER_KEY --serverURL 
 - What is each chip worth? Images and "points"
 - Get a personal player stats
 - TotalWinnerPot - the insatts
+- re-write backend to be more effecient
