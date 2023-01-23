@@ -242,6 +242,11 @@ async function getPlayerRankings() {
   return array;
 }
 
+async function getEvent(){
+  var data = await loadData("Event");
+  return data;
+}
+
 Parse.Cloud.define("getPlayerPlacements", async (request) => {
   return await getPlayerPlacements();
 });
@@ -256,6 +261,10 @@ Parse.Cloud.define("getTotalWinnerPot", async (request) => {
 });
 Parse.Cloud.define("getPlayerRankings", async (request) => {
   return await getPlayerRankings();
+});
+
+Parse.Cloud.define("getEvent", async (request) => {
+  return await getEvent();
 });
 
 
