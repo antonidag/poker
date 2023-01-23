@@ -1,17 +1,17 @@
 async function loadData(table) {
-  Parse.initialize("gZqn2uqE0Yi3yHrqxS3MVgb0InQviEu9QtVbPx5G", "IvrGvz2KIonAdfUzgOOMK6an3RhlnhaIvqFbCQ9U", process.env.MASTER_KEY);
-  //javascriptKey is required only if you have it on server.
-  return process.env.MASTER_KEY;
+  Parse.initialize('gZqn2uqE0Yi3yHrqxS3MVgb0InQviEu9QtVbPx5G', undefined); // appID
+
   Parse.serverURL = 'https://parseapi.back4app.com';
+  Parse.masterKey = process.env.MASTER_KEY;
   let array = []
   const query = new Parse.Query(table)
-  const results = await query.find(undefined,{useMasterKey: true});
+  const results = await query.find(undefined, { useMasterKey: true });
   for (let i = 0; i < results.length; i++) {
     const object = results[i];
     const data = await query.get(object.id)
     array.push(data);
   }
-
+  return array;
 }
 
 
