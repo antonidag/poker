@@ -3,10 +3,9 @@ async function loadData(table) {
   //javascriptKey is required only if you have it on server.
 
   Parse.serverURL = 'https://parseapi.back4app.com';
-  Parse.Cloud.useMasterKey();
   let array = []
   const query = new Parse.Query(table)
-  const results = await query.find();
+  const results = await query.find({useMasterKey: true});
   for (let i = 0; i < results.length; i++) {
     const object = results[i];
     const data = await query.get(object.id)
