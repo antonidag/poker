@@ -1,4 +1,8 @@
 async function loadData(table) {
+  Parse.initialize("gZqn2uqE0Yi3yHrqxS3MVgb0InQviEu9QtVbPx5G", "IvrGvz2KIonAdfUzgOOMK6an3RhlnhaIvqFbCQ9U", process.env.MASTER_KEY);
+//javascriptKey is required only if you have it on server.
+
+Parse.serverURL = 'http://YOUR_PARSE_SERVER:1337/parse'
   let array = []
   const query = new Parse.Query(table)
   const results = await query.find();
