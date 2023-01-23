@@ -276,6 +276,7 @@ Parse.Cloud.define('hello', function (request, response) {
   query.find({
     useMasterKey: true,
     success: function (data) {
+      console.log(data)
       return response.success(data);
     },
     error: function (err) {
