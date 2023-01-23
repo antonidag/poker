@@ -1,5 +1,6 @@
 async function loadData(table) {
   let array = []
+  Parse.serverURL = 'http://localhost:1337/parse'
   const query = new Parse.Query(table)
   const results = await query.find();
   for (let i = 0; i < results.length; i++) {
@@ -9,6 +10,8 @@ async function loadData(table) {
   }
   return array;
 }
+
+
 function getPlacementsPoints() {
   return {
     1: 23,
@@ -95,47 +98,47 @@ async function getTotalWinnerPot() {
   var totalWinnerPots = new Map();
   const games = await getGamesHistory();
   for (const game of games) {
-      const placements = game.placements;
-      var placementIndex = 1;
-      for (const placement of placements) {
-          var currentPlayerPot = totalWinnerPots.get(placement)
-          if (placementIndex == 1) {
-              var gamePot = (5 * game.buyin) + game.extra;
-              if (!isNaN(currentPlayerPot)) {
-                  totalWinnerPots.set(placement, currentPlayerPot + gamePot)
-                  placementIndex++;
-                  continue;
-              }
-              totalWinnerPots.set(placement, gamePot)
-              placementIndex++;
-              continue;
-          }
-          if (placementIndex == 2) {
-              var gamePot = (2 * game.buyin);
-              if (!isNaN(currentPlayerPot)) {
-
-                  totalWinnerPots.set(placement, currentPlayerPot + gamePot)
-                  placementIndex++;
-                  continue;
-              }
-              totalWinnerPots.set(placement, gamePot)
-              placementIndex++;
-              continue;
-          }
-          if (placementIndex == 3) {
-              var gamePot = (game.buyin);
-              if (!isNaN(currentPlayerPot)) {
-
-                  totalWinnerPots.set(placement, currentPlayerPot + gamePot)
-                  placementIndex++;
-                  continue;
-              }
-              totalWinnerPots.set(placement, gamePot);
-              placementIndex++;
-              break;
-          }
-
+    const placements = game.placements;
+    var placementIndex = 1;
+    for (const placement of placements) {
+      var currentPlayerPot = totalWinnerPots.get(placement)
+      if (placementIndex == 1) {
+        var gamePot = (5 * game.buyin) + game.extra;
+        if (!isNaN(currentPlayerPot)) {
+          totalWinnerPots.set(placement, currentPlayerPot + gamePot)
+          placementIndex++;
+          continue;
+        }
+        totalWinnerPots.set(placement, gamePot)
+        placementIndex++;
+        continue;
       }
+      if (placementIndex == 2) {
+        var gamePot = (2 * game.buyin);
+        if (!isNaN(currentPlayerPot)) {
+
+          totalWinnerPots.set(placement, currentPlayerPot + gamePot)
+          placementIndex++;
+          continue;
+        }
+        totalWinnerPots.set(placement, gamePot)
+        placementIndex++;
+        continue;
+      }
+      if (placementIndex == 3) {
+        var gamePot = (game.buyin);
+        if (!isNaN(currentPlayerPot)) {
+
+          totalWinnerPots.set(placement, currentPlayerPot + gamePot)
+          placementIndex++;
+          continue;
+        }
+        totalWinnerPots.set(placement, gamePot);
+        placementIndex++;
+        break;
+      }
+
+    }
   }
   return totalWinnerPots;
 }
@@ -144,100 +147,100 @@ async function getPlayerPlacements() {
   var games = await getGamesHistory();
   var placementPoints = getPlacementsPoints();
   for (const game of games) {
-      const placements = game.placements;
-      var placementIndex = 1;
-      for (const placement of placements) {
-          var currentPlayerPlacement = playerPlacements[placement]
-          var currentPlacementPoints = placementPoints[placementIndex];
-          if (!isNaN(currentPlayerPlacement)) {
-              playerPlacements[placement] = currentPlayerPlacement + currentPlacementPoints;
-              placementIndex++;
-              continue;
-          }
-          playerPlacements[placement] = currentPlacementPoints;
-          placementIndex++;
+    const placements = game.placements;
+    var placementIndex = 1;
+    for (const placement of placements) {
+      var currentPlayerPlacement = playerPlacements[placement]
+      var currentPlacementPoints = placementPoints[placementIndex];
+      if (!isNaN(currentPlayerPlacement)) {
+        playerPlacements[placement] = currentPlayerPlacement + currentPlacementPoints;
+        placementIndex++;
+        continue;
       }
+      playerPlacements[placement] = currentPlacementPoints;
+      placementIndex++;
+    }
   }
   return playerPlacements;
 }
 async function getPlayerRankings() {
-  var playerPlacements = await getPlayerPlacements();
+  console.log("Data for Player Rankings")
+
   var games = await getGamesHistory();
   var totalWinnerPots = await getTotalWinnerPot();
-  console.log("Data for Player Rankings")
-  console.log(playerPlacements, games, totalWinnerPots);
+  var playerPlacements = await getPlayerPlacements();
   var array = new Array();
   var Ranking = 1;
-  for (const player of playerPlacements) {
-      var row = {};
-      var Name = player.name;
-      var GamesPlayed = 0;
-      var Wins = 0;
-      var TotalWinnerPot = 0;
-      var WinRatio = 0;
-      var TopPlacement = 8
-      var WorstPlacement = 0;
-      var Score = player.placement;
-      var Top3Placements = 0;
-      var Top3Chance = 0;
-      for (const game of games) {
-          var placements = game.placements;
-          var found = placements.find(p => p == Name)
-          if (found) {
-              GamesPlayed++;
-          }
-          var isFirstPlace = placements[0] == Name;
-          if (isFirstPlace) {
-              Wins++;
-          }
-          var placementIndex = 1;
-          for (const player of placements) {
-              if (Name == player) {
-                  if (TopPlacement > placementIndex) TopPlacement = placementIndex;
-                  break;
-              }
-              placementIndex++;
-          }
-          placementIndex = 1;
-          for (const player of placements) {
-              if (Name == player) {
-                  if (placementIndex > WorstPlacement) {
-                      WorstPlacement = placementIndex;
-                  }
-              }
-              placementIndex++;
-          }
-          placementIndex = 1;
-          for (const player of placements) {
-              if (Name == player) {
-                  if (placementIndex == 1) {
-                      Top3Placements++;
-                  }
-                  if (placementIndex == 2) {
-                      Top3Placements++;
-                  }
-                  if (placementIndex == 3) {
-                      Top3Placements++;
-                  }
-              }
-              placementIndex++;
-          }
-
+  console.log(playerPlacements, games, totalWinnerPots);
+  for (const player of Object.keys(playerPlacements)) {
+    var row = {};
+    var Name = player.name;
+    var GamesPlayed = 0;
+    var Wins = 0;
+    var TotalWinnerPot = 0;
+    var WinRatio = 0;
+    var TopPlacement = 8
+    var WorstPlacement = 0;
+    var Score = player.placement;
+    var Top3Placements = 0;
+    var Top3Chance = 0;
+    for (const game of games) {
+      var placements = game.placements;
+      var found = placements.find(p => p == Name)
+      if (found) {
+        GamesPlayed++;
       }
-      var winnerPot = totalWinnerPots[Name];
-      if (winnerPot) {
-          TotalWinnerPot = winnerPot;
+      var isFirstPlace = placements[0] == Name;
+      if (isFirstPlace) {
+        Wins++;
       }
-      WinRatio = `${(Wins / GamesPlayed) * 100}%`;
-      Top3Chance = `${(Top3Placements / GamesPlayed) * 100}%`;
+      var placementIndex = 1;
+      for (const player of placements) {
+        if (Name == player) {
+          if (TopPlacement > placementIndex) TopPlacement = placementIndex;
+          break;
+        }
+        placementIndex++;
+      }
+      placementIndex = 1;
+      for (const player of placements) {
+        if (Name == player) {
+          if (placementIndex > WorstPlacement) {
+            WorstPlacement = placementIndex;
+          }
+        }
+        placementIndex++;
+      }
+      placementIndex = 1;
+      for (const player of placements) {
+        if (Name == player) {
+          if (placementIndex == 1) {
+            Top3Placements++;
+          }
+          if (placementIndex == 2) {
+            Top3Placements++;
+          }
+          if (placementIndex == 3) {
+            Top3Placements++;
+          }
+        }
+        placementIndex++;
+      }
 
-      row = { Ranking, Name, TotalWinnerPot, GamesPlayed, Wins, Top3Placements, TopPlacement, WorstPlacement, WinRatio, Top3Chance, Score };
-      array.push(row);
-      Ranking++;
+    }
+    var winnerPot = totalWinnerPots[Name];
+    if (winnerPot) {
+      TotalWinnerPot = winnerPot;
+    }
+    WinRatio = `${(Wins / GamesPlayed) * 100}%`;
+    Top3Chance = `${(Top3Placements / GamesPlayed) * 100}%`;
+
+    row = { Ranking, Name, TotalWinnerPot, GamesPlayed, Wins, Top3Placements, TopPlacement, WorstPlacement, WinRatio, Top3Chance, Score };
+    array.push(row);
+    Ranking++;
 
   }
   return array;
-
 }
 
 Parse.Cloud.define("getPlayerPlacements", async (request) => {

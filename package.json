@@ -6,7 +6,6 @@
   },
   "scripts": {
     "db": "mongodb-runner start",
-    "parse": "parse-server --appId appId --clientKey clientKey --masterKey masterKey --databaseURI mongodb://localhost/test",
     "cloud": "parse-server --appId APPLICATION_ID --clientKey CLIENT_KEY --masterKey MASTER_KEY --databaseURI mongodb://localhost/test --cloud ./cloud/main.js "
   }
 }
