@@ -271,16 +271,17 @@ Parse.Cloud.define("getEvent", async (request) => {
   return await getEvent();
 });
 
-Parse.Cloud.define('hello', function(request, response) {
+Parse.Cloud.define('hello', function (request, response) {
   var query = new Parse.Query("Event");
-    query.find({ useMasterKey: true,
-        success: function(data){
-            response.success(data);
-        },
-        error: function(err){
-            response.error(err);
-        }
-    })
+  query.find({
+    useMasterKey: true,
+    success: function (data) {
+      return response.success(data);
+    },
+    error: function (err) {
+      return response.error(err);
+    }
+  })
 });
 
 
