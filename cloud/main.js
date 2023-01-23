@@ -1,7 +1,7 @@
 async function loadData(table) {
   Parse.initialize("gZqn2uqE0Yi3yHrqxS3MVgb0InQviEu9QtVbPx5G", "IvrGvz2KIonAdfUzgOOMK6an3RhlnhaIvqFbCQ9U", process.env.MASTER_KEY);
   //javascriptKey is required only if you have it on server.
-
+  return process.env.MASTER_KEY;
   Parse.serverURL = 'https://parseapi.back4app.com';
   let array = []
   const query = new Parse.Query(table)
@@ -11,7 +11,7 @@ async function loadData(table) {
     const data = await query.get(object.id)
     array.push(data);
   }
-  return process.env.MASTER_KEY;
+
 }
 
 
