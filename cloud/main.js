@@ -7,7 +7,7 @@ async function loadData(table) {
     const data = await query.get(object.id)
     array.push(data);
   }
-  return array;
+  return results;
 }
 
 
