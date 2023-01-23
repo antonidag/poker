@@ -1,8 +1,9 @@
 async function loadData(table) {
   Parse.initialize("gZqn2uqE0Yi3yHrqxS3MVgb0InQviEu9QtVbPx5G", "IvrGvz2KIonAdfUzgOOMK6an3RhlnhaIvqFbCQ9U", process.env.MASTER_KEY);
-//javascriptKey is required only if you have it on server.
+  //javascriptKey is required only if you have it on server.
 
-Parse.serverURL = 'https://parseapi.back4app.com'
+  Parse.serverURL = 'https://parseapi.back4app.com';
+  Parse.Cloud.useMasterKey();
   let array = []
   const query = new Parse.Query(table)
   const results = await query.find();
@@ -246,7 +247,7 @@ async function getPlayerRankings() {
   return array;
 }
 
-async function getEvent(){
+async function getEvent() {
   var data = await loadData("Event");
   return data;
 }
