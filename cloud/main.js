@@ -5,7 +5,7 @@ async function loadData(table) {
   Parse.serverURL = 'https://parseapi.back4app.com';
   let array = []
   const query = new Parse.Query(table)
-  const results = await query.find({useMasterKey: true});
+  const results = await query.find(undefined,{useMasterKey: true});
   for (let i = 0; i < results.length; i++) {
     const object = results[i];
     const data = await query.get(object.id)
