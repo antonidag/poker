@@ -1,31 +1,3 @@
-async function loadPlayers() {
-    try {
-        const response = await fetch("http://localhost:3000/player");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-}
-async function loadGameHistory() {
-    try {
-        const response = await fetch("http://localhost:3000/gamehistory");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-}
-async function loadPlacementsPoints() {
-    try {
-        const response = await fetch("http://localhost:3000/placmentpoints");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-}
-
 function createCard(parentElement, placement, player, width, height) {
 
     // Create the card element
@@ -74,81 +46,6 @@ function createCard(parentElement, placement, player, width, height) {
     parentElement.appendChild(card);
 }
 
-function getTotalWinnerPot(games) {
-    var totalWinnerPots = new Map();
-
-    for (const game of games) {
-        const placements = game.placements;
-        var placementIndex = 1;
-        for (const placement of placements) {
-            var currentPlayerPot = totalWinnerPots[placement]
-            if (placementIndex == 1) {
-                var gamePot = (5 * game.buyin) + game.extra;
-                if (!isNaN(currentPlayerPot)) {
-                    totalWinnerPots[placement] = currentPlayerPot + gamePot;
-                    placementIndex++;
-                    continue;
-                }
-                totalWinnerPots[placement] = gamePot;
-                placementIndex++;
-                continue;
-            }
-            if (placementIndex == 2) {
-                var gamePot = (2 * game.buyin);
-                if (!isNaN(currentPlayerPot)) {
-
-                    totalWinnerPots[placement] = currentPlayerPot + gamePot;
-                    placementIndex++;
-                    continue;
-                }
-                totalWinnerPots[placement] = gamePot;
-                placementIndex++;
-                continue;
-            }
-            if (placementIndex == 3) {
-                var gamePot = (game.buyin);
-                if (!isNaN(currentPlayerPot)) {
-
-                    totalWinnerPots[placement] = currentPlayerPot + gamePot;
-                    placementIndex++;
-                    continue;
-                }
-                totalWinnerPots[placement] = gamePot;
-                placementIndex++;
-                break;
-            }
-
-        }
-    }
-    return totalWinnerPots;
-}
-function getPlayerPlacements(games, placementPoints) {
-    var playerPlacements = new Map();
-    for (const game of games) {
-        const placements = game.placements;
-        var placementIndex = 1;
-        for (const placement of placements) {
-            var currentPlayerPlacement = playerPlacements[placement]
-            var currentPlacementPoints = placementPoints[placementIndex];
-            if (!isNaN(currentPlayerPlacement)) {
-                playerPlacements[placement] = currentPlayerPlacement + currentPlacementPoints;
-                placementIndex++;
-                continue;
-            }
-            playerPlacements[placement] = currentPlacementPoints;
-            placementIndex++;
-        }
-    }
-    return playerPlacements;
-}
-function convertMapToArray(data) {
-    var array = new Array()
-    for (let key in data) {
-        array.push({ name: key, placement: data[key] });
-    }
-    return array;
-}
-
 function convertWinnerPotToArray(data) {
     var array = new Array()
     array.push(["Pot", "Total Winner Pot"])
@@ -182,110 +79,29 @@ function createTableRow(parentElement, data) {
         }
     }
 }
-function createTableData(playerPlacements, games, totalWinnerPots) {
-    console.log(playerPlacements);
-    console.log(games);
-    console.log(totalWinnerPots);
-    var array = new Array();
-    var Ranking = 1;
-    for (const player of playerPlacements) {
-        var row = {};
-        var Name = player.name;
-        var GamesPlayed = 0;
-        var Wins = 0;
-        var TotalWinnerPot = 0;
-        var WinRatio = 0;
-        var TopPlacement = 8
-        var WorstPlacement = 0;
-        var Score = player.placement;
-        var Top3Placements = 0;
-        var Top3Chance = 0;
-        for (const game of games) {
-            var placements = game.placements;
-            var found = placements.find(p => p == Name)
-            if (found) {
-                GamesPlayed++;
-            }
-            var isFirstPlace = placements[0] == Name;
-            if (isFirstPlace) {
-                Wins++;
-            }
-            var placementIndex = 1;
-            for (const player of placements) {
-                if (Name == player) {
-                    if (TopPlacement > placementIndex) TopPlacement = placementIndex;
-                    break;
-                }
-                placementIndex++;
-            }
-            placementIndex = 1;
-            for (const player of placements) {
-                if (Name == player) {
-                    if (placementIndex > WorstPlacement) {
-                        WorstPlacement = placementIndex;
-                    }
-                }
-                placementIndex++;
-            }
-            placementIndex = 1;
-            for (const player of placements) {
-                if (Name == player) {
-                    if (placementIndex == 1) {
-                        Top3Placements++;
-                    }
-                    if (placementIndex == 2) {
-                        Top3Placements++;
-                    }
-                    if (placementIndex == 3) {
-                        Top3Placements++;
-                    }
-                }
-                placementIndex++;
-            }
-
-        }
-        var winnerPot = totalWinnerPots[Name];
-        if (winnerPot) {
-            TotalWinnerPot = winnerPot;
-        }
-        WinRatio = `${(Wins / GamesPlayed) * 100}%`;
-        Top3Chance =`${(Top3Placements / GamesPlayed) * 100}%`;
-
-        row = { Ranking, Name ,TotalWinnerPot, GamesPlayed,Wins,  Top3Placements, TopPlacement, WorstPlacement, WinRatio, Top3Chance,Score};
-        array.push(row);
-        Ranking++;
-
-    }
-    return array;
-
-}
 (async () => {
-    const players = await loadPlayers();
-    const games = await loadGameHistory();
-    const placementPoints = await loadPlacementsPoints();
+    // Initialize Parse
+    Parse.initialize("gZqn2uqE0Yi3yHrqxS3MVgb0InQviEu9QtVbPx5G", "IvrGvz2KIonAdfUzgOOMK6an3RhlnhaIvqFbCQ9U"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
+    Parse.serverURL = "https://parseapi.back4app.com/";
 
-    var playerPlacements = getPlayerPlacements(games, placementPoints);
-    var totalWinnerPots = getTotalWinnerPot(games);
+    var playerRankings =  await Parse.Cloud.run("getPlayerRankings");
+    var totalWinnerPots =  await Parse.Cloud.run("getTotalWinnerPot");
+    console.log(totalWinnerPots);
+    // var parentElement = document.querySelector(`#placmentfirst`);
+    // var player1 = players.find(p => p.name == playerPlacements[p.name])
+    // createCard(parentElement, "#1", player1, "25rem", "");
+    // parentElement = document.querySelector("#placmentsecond")
+    // var player2 = players.find(p => p.name == playerPlacements[p.name])
+    // var player3 = players.find(p => p.name == playerPlacements[p.name])
+    // createCard(parentElement, "#2", player2, "17rem", "");
+    // createCard(parentElement, "#3", player3, "10rem", "100%");
 
-    // Sort Player placement by largest number
-    var sortedPlayerPlacementArray = convertMapToArray(playerPlacements);
-    console.log(sortedPlayerPlacementArray);
-    sortedPlayerPlacementArray = sortedPlayerPlacementArray.sort((a, b) => { return b.placement - a.placement; });
-    var parentElement = document.querySelector(`#placmentfirst`);
-    var player1 = players.find(p => p.name == sortedPlayerPlacementArray[0].name)
-    createCard(parentElement, "#1", player1, "25rem", "");
-    parentElement = document.querySelector("#placmentsecond")
-    var player2 = players.find(p => p.name == sortedPlayerPlacementArray[1].name)
-    var player3 = players.find(p => p.name == sortedPlayerPlacementArray[2].name)
-    createCard(parentElement, "#2", player2, "17rem", "");
-    createCard(parentElement, "#3", player3, "10rem", "100%");
 
-    var tableRowData = createTableData(sortedPlayerPlacementArray, games, totalWinnerPots)
-    console.log(tableRowData)
+    console.log(playerRankings)
     parentElement = document.querySelector("#tablehead")
-    createTableHr(parentElement, Object.keys(tableRowData[0]));
+    createTableHr(parentElement, Object.keys(playerRankings[0]));
     parentElement = document.querySelector("#tablebody");
-    createTableRow(parentElement, tableRowData);
+    createTableRow(parentElement, playerRankings);
 
 
     google.charts.load('current', { 'packages': ['corechart'] });
