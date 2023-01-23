@@ -1,6 +1,5 @@
 async function loadData(table) {
   let array = []
-  Parse.serverURL = 'http://localhost:1337/parse'
   const query = new Parse.Query(table)
   const results = await query.find();
   for (let i = 0; i < results.length; i++) {
