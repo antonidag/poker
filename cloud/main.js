@@ -5,7 +5,7 @@ async function loadData(table) {
   Parse.masterKey = process.env.MASTER_KEY;
   let array = []
   const query = new Parse.Query(table)
-  const results = await query.find(undefined, { useMasterKey: true });
+  const results = await query.find({ useMasterKey: true });
   for (let i = 0; i < results.length; i++) {
     const object = results[i];
     const data = await query.get(object.id)
@@ -271,5 +271,16 @@ Parse.Cloud.define("getEvent", async (request) => {
   return await getEvent();
 });
 
+Parse.Cloud.define('hello', function(request, response) {
+  var query = new Parse.Query("Event");
+    query.find({ useMasterKey: true,
+        success: function(data){
+            response.success(data);
+        },
+        error: function(err){
+            response.error(err);
+        }
+    })
+});
 
 
