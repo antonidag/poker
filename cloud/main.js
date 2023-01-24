@@ -1,15 +1,14 @@
 async function loadData(table) {
   let array = []
   const query = new Parse.Query(table)
-  const results = await query.first({ useMasterKey: true });
+  const results = await query.find();
   for (let i = 0; i < results.length; i++) {
     const object = results[i];
     const data = await query.get(object.id)
     array.push(data);
   }
-  return results;
+  return array;
 }
-
 
 function getPlacementsPoints() {
   return {
@@ -265,20 +264,6 @@ Parse.Cloud.define("getPlayerRankings", async (request) => {
 
 Parse.Cloud.define("getEvent", async (request) => {
   return await getEvent();
-});
-
-Parse.Cloud.define('hello', function (request, response) {
-  var query = new Parse.Query("Event");
-  query.find({
-    useMasterKey: true,
-    success: function (data) {
-      console.log(data)
-      return response.success(data);
-    },
-    error: function (err) {
-      return response.error(err);
-    }
-  })
 });
 
 
