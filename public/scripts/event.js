@@ -13,7 +13,7 @@ function createEventCard(eventName, eventLocation, eventDate) {
     eventRow.appendChild(eventCol2);
 
     var eventCard = document.createElement("div");
-    eventCard.classList.add("card", "text-center");
+    eventCard.classList.add("card", "text-center", "bg-info", "text-white", "mb-3");
     eventCard.style.width = "18rem";
     eventCol2.appendChild(eventCard);
 
@@ -27,7 +27,7 @@ function createEventCard(eventName, eventLocation, eventDate) {
     eventCardBody.appendChild(eventTitle);
 
     var eventSubtitle = document.createElement("h6");
-    eventSubtitle.classList.add("card-subtitle", "mb-2", "text-muted");
+    eventSubtitle.classList.add("card-subtitle", "mb-2");
     eventSubtitle.innerText = `Location: ${eventLocation}`;
     eventCardBody.appendChild(eventSubtitle);
 
@@ -57,15 +57,16 @@ function createImgCard(parentElement) {
     img.src = "./shared/media/pokertable.png";
     col.appendChild(img);
     parentElement.appendChild(col);
+
 }
 
-function createSeatCard(parentElement, seatNr) {
+function createAvailableSeatCard(parentElement, seatNr) {
     var eventCol = document.createElement("div");
     eventCol.classList.add("col-sm");
     parentElement.appendChild(eventCol);
 
     var eventCard = document.createElement("div");
-    eventCard.classList.add("card", "text-center");
+    eventCard.classList.add("card", "text-center", "text-white", "bg-dark", "mb-3");
     eventCard.style.width = "18rem";
     eventCol.appendChild(eventCard);
 
@@ -83,14 +84,83 @@ function createSeatCard(parentElement, seatNr) {
     eventStatus.innerText = "Status: Available";
     eventCardBody.appendChild(eventStatus);
 
-    var eventLink = document.createElement("a");
-    eventLink.classList.add("btn", "btn-primary");
-    eventLink.innerText = "Claim";
-    eventLink.href = "#";
-    eventCardBody.appendChild(eventLink);
+    var eventButton = document.createElement("button");
+    eventButton.classList.add("btn", "btn-primary");
+    eventButton.innerText = "Claim";
+    eventButton.href = "#";
+    eventButton.id = seatNr;
+
+    eventCardBody.appendChild(eventButton);
+    eventButton.addEventListener("click", async function (event) {
+        var result = await claimEventSeat('zHDADRXOwm', seatNr, "antonidag@hotmail.com");
+        if (result == "OK") {
+            alert("You claim seat:" + seatNr);
+        } else {
+            console.log(result);
+        }
+    })
+}
+function createTakenSeatCard(parentElement, seatNr, player) {
+    var eventCol = document.createElement("div");
+    eventCol.classList.add("col-sm");
+    parentElement.appendChild(eventCol);
+
+    var eventCard = document.createElement("div");
+    eventCard.classList.add("card", "text-center", "text-white", "bg-dark", "mb-3");
+    eventCard.style.width = "18rem";
+    eventCol.appendChild(eventCard);
+
+    var eventCardBody = document.createElement("div");
+    eventCardBody.classList.add("card-body");
+    eventCard.appendChild(eventCardBody);
+
+    var eventTitle = document.createElement("h5");
+    eventTitle.classList.add("card-title");
+    eventTitle.innerText = `Seat: ${seatNr}`;
+    eventCardBody.appendChild(eventTitle);
+
+    var eventStatus = document.createElement("h6");
+    eventStatus.classList.add("card-title");
+    eventStatus.innerText = "Status: Taken";
+    eventCardBody.appendChild(eventStatus);
+
+    var eventButton = document.createElement("p");
+    eventButton.classList.add("card-text");
+    eventButton.innerText = `Player: ${player}`;
+    eventButton.href = "#";
+    eventButton.id = seatNr;
+
+    eventCardBody.appendChild(eventButton);
+    eventButton.addEventListener("click", async function (event) {
+        var result = await claimEventSeat('zHDADRXOwm', seatNr, "antonidag@hotmail.com");
+        if (result == "OK") {
+            alert("You claim seat:" + seatNr);
+            document.location.reload();
+        } else {
+            console.log(result);
+        }
+    })
 }
 
-
+async function claimEventSeat(eventId, seatNr, playerName) {
+    const data = await Parse.Cloud.run("getEvent");
+    const event = new Parse.Object("Event");
+    for (const e of data) {
+        const isTaken = e.get(`seat${seatNr}`)
+        if (e.id == eventId && !isTaken) {
+            //set the object
+            event.set('objectId', eventId);
+            event.set(`seat${seatNr}`, playerName);
+            try {
+                //Save the Object
+                let result = await event.save();
+                return "OK"
+            } catch (error) {
+                return error;
+            }
+        }
+    }
+}
 
 
 (async () => {
@@ -106,37 +176,23 @@ function createSeatCard(parentElement, seatNr) {
     var content = document.querySelector("#content")
     var row = createRow();
     content.appendChild(row);
-    for (let index = 1; index < 4; index++) {
-        const element = data[0].get(`seat${index}`);
-        if (element) {
-
-        } else {
-            createSeatCard(row, index);
-        }
-    }
+    createSeat(data, row, 1);
+    createSeat(data, row, 2);
+    createSeat(data, row, 3);
     row = createRow();
     content.appendChild(row);
-    var seat = data[0].get(`seat4`);
-    if (seat) {
-
-    } else {
-        createSeatCard(row, 4)
-    }
+    createSeat(data, row, 4);
     createImgCard(row);
-    var seat = data[0].get(`seat5`);
-    if (seat) {
-
-    } else {
-        createSeatCard(row, 5)
-    }
+    createSeat(data, row, 5);
     row = createRow();
     content.appendChild(row);
-    for (let index = 6; index < 9; index++) {
-        const element = data[0].get(`seat${index}`);
-        if (element) {
+    createSeat(data, row, 6);
+    createSeat(data, row, 7);
+    createSeat(data, row, 8);
 
-        } else {
-            createSeatCard(row, index);
-        }
-    }
 })();  
+
+function createSeat(data, row, index) {
+    const element = data[0].get(`seat${index}`);
+    const create = element ? createTakenSeatCard(row, index, element) : createAvailableSeatCard(row, index);
+}
