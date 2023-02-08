@@ -243,7 +243,9 @@ async function getPlayerRankings() {
 
 async function getEvent() {
   var data = await loadData("Event");
-  return data;
+  return data.reduce((a, b) => {
+    return new Date(a.get('date')) > new Date(b.get('date')) ? a : b;
+  });
 }
 
 Parse.Cloud.define("getPlayerPlacements", async (request) => {
