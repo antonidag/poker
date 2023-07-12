@@ -1,11 +1,15 @@
 {
-  "dependencies": {
-    "apollo-server-core": "^3.11.1",
-    "mongodb-runner": "^4.9.0",
-    "parse-server": "^5.4.0"
-  },
+  "name": "poker",
+  "version": "1.0.0",
+  "description": "```bash\r npm install\r ```",
+  "main": "index.js",
   "scripts": {
-    "db": "mongodb-runner start",
-    "cloud": "parse-server --appId APPLICATION_ID --clientKey CLIENT_KEY --masterKey MASTER_KEY --databaseURI mongodb://localhost/test --cloud ./cloud/main.js "
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }
