@@ -9,19 +9,8 @@ npm install
 ## Running web application
 On windows run in elevated bash
 ```bash
-npm run db
+npm start
 ```
-```bash
-parse-server --appId APPLICATION_ID --clientKey CLIENT_KEY --masterKey MASTER_KEY --databaseURI mongodb://localhost/test --cloud ./cloud/main.js
-```
-
-## Install the Dashboard
-```bash
-parse-dashboard --dev --appId APPLICATION_ID --masterKey MASTER_KEY --serverURL http://localhost:1337/parse --appName MY_APP
-```
-
-## Add docker
- - set up docker file
 
 ## Things to add
 - prediction
