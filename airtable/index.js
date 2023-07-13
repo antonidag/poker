@@ -19,6 +19,7 @@ export class AirTableAPIClient {
           redirect: 'follow'
         };
         const response = await fetch(`https://api.airtable.com/v0/app73ftdOgLbYaulY/${tableName}?view=Grid%20view`, requestOptions);
-        return response.json();
+        const jsonObj = await response.json();
+        return jsonObj.records.map(item => item.fields);
     }
 }
