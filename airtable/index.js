@@ -4,7 +4,12 @@ export class AirTableAPIClient {
         this.patToken = patToken
     }
 
-    async getTableRecords() {
+    async getTableRecords(tableName) {
+        const isString = typeof tableName == 'string' ? true : false;
+        if(!isString || tableName == undefined) {
+            throw new Error('Missing tableName parameter or tableName parameter is undefined')
+        }
+
         var myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${this.patToken}`);
       
@@ -13,7 +18,7 @@ export class AirTableAPIClient {
           headers: myHeaders,
           redirect: 'follow'
         };
-        const response = await fetch("https://api.airtable.com/v0/app73ftdOgLbYaulY/Players?maxRecords=3&view=Grid%20view", requestOptions);
+        const response = await fetch(`https://api.airtable.com/v0/app73ftdOgLbYaulY/${tableName}?view=Grid%20view`, requestOptions);
         return response.json();
     }
 }
