@@ -68,7 +68,7 @@ app.get('/placements', async (req, res) => {
 });
 
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, () => {
   console.log(`Running on http://0.0.0.0:8080`);
 });
 
