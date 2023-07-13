@@ -13,9 +13,7 @@ export class AirTableAPIClient {
           headers: myHeaders,
           redirect: 'follow'
         };
-      
         const response = await fetch("https://api.airtable.com/v0/app73ftdOgLbYaulY/Players?maxRecords=3&view=Grid%20view", requestOptions);
-
-        return response.body;
+        return response.json();
     }
 }
