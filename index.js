@@ -26,6 +26,28 @@ app.get('/players', async (req, res) => {
 
 });
 
+app.get('/games', async (req, res) => {
+  try {
+    const result = await airTableAPIClient.getTableRecords('Games');
+    res.status(200).send(result)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({error: error})
+  }
+
+});
+
+app.get('/placements', async (req, res) => {
+  try {
+    const result = await airTableAPIClient.getTableRecords('Placements');
+    res.status(200).send(result)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({error: error})
+  }
+
+});
+
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Running on http://0.0.0.0:8080`);
