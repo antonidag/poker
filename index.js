@@ -16,8 +16,16 @@ app.get('/', (req, res) => {
 
 
 app.get('/players', async (req, res) => {
-  const result = await airTableAPIClient.getTableRecords();
-  res.status(200).send(result)
+  try {
+    console.log('Getting data')
+    const result = await airTableAPIClient.getTableRecords();
+    console.log('Returning response')
+    res.status(200).send(result)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({error: error})
+  }
+
 });
 
 
