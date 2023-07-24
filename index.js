@@ -4,10 +4,12 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import dot from 'dotenv'
 import { AirTableAPIClient } from './airtable/index.js';
+import { JsonHtml } from './html/index.js';
 dot.config()
 const PORT = 8080;
 
-const airTableAPIClient = new AirTableAPIClient(process.env['AIRTABLEKEY'])
+const airTableAPIClient = new AirTableAPIClient(process.env['AIRTABLEKEY']);
+const jsonHTMLClient = new JsonHtml();
 
 // App
 
@@ -24,7 +26,9 @@ app.get('/', (req, res) => {
 app.get('/players', async (req, res) => {
   try {
     const result = await airTableAPIClient.getTableRecords('Players');
-    res.status(200).send(result)
+    const playerHTML = jsonHTMLClient.playersHTML(result)
+    console.log(playerHTML)
+    res.status(200).send(playerHTML)
   } catch (error) {
     console.error(error)
     res.status(500).send({error: error})
